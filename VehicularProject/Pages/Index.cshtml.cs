@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace VehicularProject.Pages {
     public class IndexModel : PageModel {
         private readonly ILogger<IndexModel> _logger;
-
         public IndexModel(ILogger<IndexModel> logger) {
             _logger = logger;
         }
@@ -18,10 +17,10 @@ namespace VehicularProject.Pages {
         public int bottomRightX { get; set; } = 100;
         public int bottomRightY { get; set; } = 100;
         public void OnGet() {
-
         }
-        public ActionResult imageProcess(IndexModel input) {
-            return null;
+        public IActionResult OnPost() {
+            var t = this.topLeftX;
+            return RedirectToAction("/");
         }
     }
 }
