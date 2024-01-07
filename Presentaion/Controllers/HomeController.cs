@@ -9,9 +9,8 @@ namespace Presentaion.Controllers {
         public HomeController(ILogger<HomeController> logger) {
             _logger = logger;
         }
-
-        public IActionResult Index() {
-            return View();
+        public IActionResult Index(ImageProcessingModel input) {
+            return View(input);
         }
 
         public IActionResult Privacy() {
