@@ -2,14 +2,16 @@
 
 @{
     ViewData["Title"] = "Home Page";
+    string v = DateTime.Now.Ticks.ToString();
 }
 
 <div class="text-center">
     <form method="post">
-        <input name="picture" type="file" accept="image/*" onchange="browseImageChange(event);" />
+        <input type="file" accept="image/*" onchange="browseImageChange(event);" />
         <br />
         <canvas id="imageCanvas"></canvas>
-        <img id="picture" src="@Model.picture" alt="Selected Image" onload="onLoadImage();" style="display: none; max-width: 300px; max-height: 300px;" />
+        <input id="picture" name="picture" value="@Model.picture" type="hidden" />
+        <img id="img" src="@(Model.picture + "?v=" + v)" alt="Selected Image" onload="onLoadImage();" style="display: none; max-width: 300px; max-height: 300px;" />
         <br />
         <label>
             Top Left X
@@ -48,6 +50,14 @@
         </label>
         <br />
         <input type="submit" value="Process" />
+        @if (!string.IsNullOrWhiteSpace(Model.outputPicture))
+        {            
+            <br />
+            <img src="@Model.outputPicture" alt="Output Image" />
+            <br />
+            <img src="@Model.thresholdedPicture" alt="Thresholded Image" />
+        }
+
     </form>
 </div>
 <script>
@@ -61,7 +71,8 @@
     const bottomRightX = document.getElementById('bottomRightX');
     const bottomRightY = document.getElementById('bottomRightY');
     const ctx = canvas.getContext('2d');
-    const img = document.getElementById('picture');
+    const img = document.getElementById('img');
+    const picture = document.getElementById('picture');
     function onLoadImage() {
         onChangeCorners();
     }
@@ -101,11 +112,16 @@
             const reader = new FileReader();
 
             reader.onload = function (e) {
+                debugger;
                 img.src = e.target.result;
+                picture.value = e.target.result;
                 //img.style.display = 'block';
             }
 
             reader.readAsDataURL(input.files[0]);
         }
+    }
+    if (img.src.length > 0) {
+        onLoadImage();
     }
 </script>
